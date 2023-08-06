@@ -24,8 +24,14 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={isDarkMode ? "dark" : ""}>
-        <nav className="border-b-2 border-gray-200 dark:border-gray-800 mb-10 p-2 md:p-4">
+      <body
+        className={
+          isDarkMode
+            ? "dark w-full min-h-screen flex flex-col"
+            : "w-full min-h-screen flex flex-col"
+        }
+      >
+        <nav className="border-b-2 border-gray-200 dark:border-gray-800 p-2 md:p-4">
           <div className="w-full mx-auto">
             <div className="mx-2 flex flex-wrap items-center justify-between">
               <Link href="/" className="flex">
@@ -84,7 +90,7 @@ export default function RootLayout({
               </div>
               <div
                 className={[
-                  "md:flex justify-between items-end w-full md:w-auto md:order-1",
+                  "md:flex justify-between items-end w-full md:w-auto md:order-1 animate-in slide-in-from-left",
                   showMobileMenu ? "block" : "hidden",
                 ].join(" ")}
                 id="mobile-menu-3"
@@ -96,7 +102,7 @@ export default function RootLayout({
                     route="/demo"
                     routeName="Demo"
                   />
-                  <div className="flex items-center mt-4 mb-2 md:m-0 space-x-2">
+                  <div className="flex items-center justify-end md:justify-start mt-4 mb-2 md:m-0 space-x-2">
                     <Switch
                       id="dark-mode"
                       checked={isDarkMode}
@@ -113,7 +119,7 @@ export default function RootLayout({
             </div>
           </div>
         </nav>
-        {children}
+        <main className="flex-1 flex flex-col">{children}</main>
       </body>
     </html>
   );
