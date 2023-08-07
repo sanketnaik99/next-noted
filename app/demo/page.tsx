@@ -1,7 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Excalidraw } from "@excalidraw/excalidraw";
+import React, { useCallback } from "react";
 import "./styles.css";
+import { debounce } from "debounce";
+import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
+import { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types";
+import dynamic from "next/dynamic";
+
+const Excalidraw = dynamic(
+  () => import("@excalidraw/excalidraw").then((d) => d.Excalidraw),
+  {
+    ssr: false,
+  }
+);
 
 const Page = () => {
   // const [Excalidraw, setExcalidraw] = useState<any>(null);
@@ -13,9 +23,23 @@ const Page = () => {
   //   );
   // }, []);
 
+  const debouncedChangeHandler = useCallback(
+    debounce(
+      (
+        elements: readonly ExcalidrawElement[],
+        appState: AppState,
+        files: BinaryFiles
+      ) => {
+        console.log(elements, appState, files);
+      },
+      1000
+    ),
+    []
+  );
+
   return (
     <div className="flex-grow flex flex-col excalidraw-custom">
-      <Excalidraw theme="dark" libraryReturnUrl="" />
+      <Excalidraw theme="dark" onChange={debouncedChangeHandler} />
     </div>
   );
 };
