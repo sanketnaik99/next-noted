@@ -50,7 +50,7 @@ export default function RootLayout({
         setTheme(Boolean(JSON.parse(isDarkTheme)));
       }
     }
-  }, [window]);
+  }, []);
 
   return (
     <html lang="en">
