@@ -16,7 +16,7 @@ const NavbarLink = ({
       className={[
         "block pl-3 pr-4 py-2 md:px-4 md:py-2 rounded md:hover:bg-gray-100 dark:md:hover:bg-gray-900",
         pathname === route
-          ? "text-white bg-blue-700 md:bg-gray-100 dark:md:bg-gray-900 md:text-blue-700 dark:md:text-blue-400"
+          ? "text-white bg-primary md:bg-gray-100 dark:md:bg-gray-900 md:text-primary dark:md:text-primary"
           : "",
       ].join(" ")}
     >

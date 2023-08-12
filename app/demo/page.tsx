@@ -5,6 +5,7 @@ import { debounce } from "debounce";
 import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
 import { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types";
 import dynamic from "next/dynamic";
+import { useThemeStore } from "../layout";
 
 const Excalidraw = dynamic(
   () => import("@excalidraw/excalidraw").then((d) => d.Excalidraw),
@@ -14,6 +15,7 @@ const Excalidraw = dynamic(
 );
 
 const Page = () => {
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
   // const [Excalidraw, setExcalidraw] = useState<any>(null);
 
   // useEffect(() => {
@@ -39,7 +41,10 @@ const Page = () => {
 
   return (
     <div className="flex-grow flex flex-col excalidraw-custom">
-      <Excalidraw theme="dark" onChange={debouncedChangeHandler} />
+      <Excalidraw
+        theme={isDarkMode ? "dark" : "light"}
+        onChange={debouncedChangeHandler}
+      />
     </div>
   );
 };

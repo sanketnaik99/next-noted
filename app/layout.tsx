@@ -1,7 +1,7 @@
 "use client";
 
 // Libraries
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -12,6 +12,25 @@ import NavbarLink from "@/components/navbar/navbar-link/NavbarLink";
 
 // Styles
 import "./globals.css";
+import { create } from "zustand";
+
+interface ThemeState {
+  isDarkMode: boolean;
+  toggleTheme: () => void;
+  setTheme: (isDarkMode: boolean) => void;
+}
+
+export const useThemeStore = create<ThemeState>((set) => ({
+  isDarkMode: true,
+  toggleTheme: () =>
+    set((state) => {
+      localStorage.setItem("isDarkTheme", JSON.stringify(!state.isDarkMode));
+      return { isDarkMode: !state.isDarkMode };
+    }),
+  setTheme: (isDarkMode: boolean) => {
+    set({ isDarkMode });
+  },
+}));
 
 export default function RootLayout({
   children,
@@ -19,16 +38,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
+  const setTheme = useThemeStore((state) => state.setTheme);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isDarkTheme = localStorage.getItem("isDarkTheme");
+      if (isDarkTheme) {
+        setTheme(Boolean(JSON.parse(isDarkTheme)));
+      }
+    }
+  }, [window]);
 
   return (
     <html lang="en">
       <body
         className={
           isDarkMode
-            ? "dark w-full min-h-screen flex flex-col"
-            : "w-full min-h-screen flex flex-col"
+            ? "dark w-full min-h-screen flex flex-col transition-colors duration-300"
+            : "w-full min-h-screen flex flex-col transition-colors duration-300"
         }
       >
         <nav className="border-b-2 border-gray-200 dark:border-gray-800 p-2 md:p-4">
@@ -107,7 +137,7 @@ export default function RootLayout({
                       id="dark-mode"
                       checked={isDarkMode}
                       onCheckedChange={(event) => {
-                        setIsDarkMode(event.valueOf());
+                        toggleTheme();
                       }}
                     />
                     <Label htmlFor="dark-mode">
