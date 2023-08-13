@@ -44,6 +44,12 @@ const Page = () => {
       <Excalidraw
         theme={isDarkMode ? "dark" : "light"}
         onChange={debouncedChangeHandler}
+        UIOptions={{
+          canvasActions: {
+            toggleTheme: false,
+            changeViewBackgroundColor: false,
+          },
+        }}
       />
     </div>
   );
