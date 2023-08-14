@@ -23,6 +23,7 @@ import {
   PanelLeftOpen,
   Star,
 } from "lucide-react";
+import { db } from "@/lib/db";
 
 // const Excalidraw = dynamic(
 //   () => import("@excalidraw/excalidraw").then((d) => d.Excalidraw),
@@ -30,30 +31,6 @@ import {
 //     ssr: false,
 //   }
 // );
-
-export interface Note {
-  id?: number;
-  title: string;
-  excalidrawElements: ExcalidrawElement[];
-  excalidrawAppState: AppState;
-  excalidrawFiles: BinaryFiles;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export class NotesSubClassedDexie extends Dexie {
-  notes!: Table<Note>;
-
-  constructor() {
-    super("noted");
-    this.version(1).stores({
-      notes:
-        "++id, title, excalidrawElements, excalidrawAppState, excalidrawFiles, createdAt, updatedAt",
-    });
-  }
-}
-
-export const db = new NotesSubClassedDexie();
 
 const Page = () => {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
